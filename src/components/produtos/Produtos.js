@@ -28,6 +28,7 @@ const Botao = styled.button`
 `;
 
 class Produtos extends React.Component {
+
   state = {
     produtos: [
       {
@@ -112,8 +113,7 @@ class Produtos extends React.Component {
           <Botao>Adicionar ao carrinho</Botao>
         </ItemProduto>
       );
-    });
-
+    });    
     console.log(listaProdutos);
     return (
       <div>
@@ -125,11 +125,9 @@ class Produtos extends React.Component {
           <option value="crescente"> Preço: Crescente </option>
           <option value="decrescente"> Preço: Decrescente </option>
         </select>
-
         <ContainerProdutos>{listaProdutos}</ContainerProdutos>
       </div>
     );
   }
 }
-
 export default Produtos;
