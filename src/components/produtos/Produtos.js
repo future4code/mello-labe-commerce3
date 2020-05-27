@@ -39,70 +39,92 @@ class Produtos extends React.Component {
             {
                 id: 2, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 1000.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 3, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 5000.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 4, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 100.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 5, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 1300.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 6, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 30000.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 7, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 6000.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
 
             {
                 id: 8, 
                 name: "Foguete da Missão Apollo 11", 
-                value: 10000.0, 
+                value: 10400.0, 
                 imageUrl: "https://picsum.photos/200/200",
             },
-        ]
-    }
+        ],
 
-    render () {
-        const listaProdutos = this.state.produtos.map(produto => {
-            return <ItemProduto>
-                        <img src={produto.imageUrl} />
-                        <p>{produto.name}</p>
-                        <p>{produto.value}</p>
-                        <Botao>Adicionar ao carrinho</Botao>
-                </ItemProduto>
-        })
+        filtroSelecionado: "crescente",
+  };
+  alteraFiltro = (event) => {
+    this.setState({ filtroSelecionado: event.target.value });
+  };
+  render() {
+    const listaOrdenada = this.state.produtos.sort((a, b) => {
+      if (this.state.filtroSelecionado === "crescente") {
+        return a.value - b.value;
+      } else if (this.state.filtroSelecionado === "decrescente") {
+        return b.value - a.value;
+      }
+    });
 
-        return (
-            <ContainerProdutos>
-                {listaProdutos}
-            </ContainerProdutos>
-        )
-    }
+    const listaProdutos = listaOrdenada.map((produto) => {
+      return (
+        <ItemProduto>
+          <img src={produto.imageUrl} />
+          <p>{produto.name}</p>
+          <p>{produto.value}</p>
+          <Botao>Adicionar ao carrinho</Botao>
+        </ItemProduto>
+      );
+    });
+    
+    console.log(listaProdutos);
+    return (
+      <div>
+        <p>Quantidade de Produtos : {this.state.produtos.length}</p>
+        <select
+          value={this.state.filtroSelecionado}
+          onChange={this.alteraFiltro}
+        >
+          <option value="crescente"> Preço: Crescente </option>
+          <option value="decrescente"> Preço: Decrescente </option>
+        </select>
+        <ContainerProdutos>{listaProdutos}</ContainerProdutos>
+      </div>
+    );
+  }
 }
-
-export default Produtos
+export default Produtos;
