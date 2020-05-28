@@ -8,14 +8,6 @@ const ItemProduto = styled.div`
   padding: 5px;
 `;
 
-const Botao = styled.button`
-  font-size: 14px;
-  &:hover {
-    background-color: blue;
-    color: white;
-  }
-`;
-
 class Produtos extends React.Component {
 
   render() {
@@ -24,7 +16,6 @@ class Produtos extends React.Component {
             <img src={this.props.imagemProduto} alt="foto produto"/>
             <p>{this.props.nomeProduto}</p>
             <p>R$ {this.props.valorProduto}</p>
-            <Botao>Adicionar ao carrinho</Botao>
         </ItemProduto>
     );
   }
