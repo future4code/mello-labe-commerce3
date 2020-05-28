@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Filtro from './components/filtro/Filtro.js';
 import Produtos from './components/produtos/Produtos.js';
+import Carrinho from './components/carrinho/Carrinho.js';
 import styled from 'styled-components';
 
 const Container = styled.div `
@@ -17,6 +18,13 @@ const ContainerProdutos = styled.div`
   justify-items: center;
   align-items: center;
 `
+const Botao = styled.button`
+  font-size: 14px;
+  &:hover {
+    background-color: blue;
+    color: white;
+  }
+`;
 
 const produtos = [{
     id: 1,
@@ -121,8 +129,26 @@ class App extends React.Component {
             })
         }
         return produtosFiltrados
-    }    
+    } 
     
+    adicionarProduto = (id) => {
+        const addProduto = {
+            valor: this.state.produtos.id,
+            quantidade: "",
+        }
+
+        const novoCarrinho = [...this.state.carrinho, addProduto]
+
+        this.setState({carrinho: novoCarrinho})
+
+        const carrinhoCheio = this.state.produtos.filter((produto) => {
+            return produto.id === id 
+        })
+
+        this.setState({carrinho: carrinhoCheio})
+
+        console.log(carrinhoCheio)
+    }
     
     render() {
         const listaOrdenada = this.filtraProdutos().sort((a, b) => {
@@ -134,13 +160,19 @@ class App extends React.Component {
         });
 
         const listaProdutos = listaOrdenada.map(produto => {
-            return <Produtos 
-                        key={produto.id}
-                        imagemProduto={produto.imageUrl}
-                        nomeProduto={produto.name}
-                        valorProduto={produto.value}
+            return <div>
+                        <Produtos 
+                            key={produto.id}
+                            imagemProduto={produto.imageUrl}
+                            nomeProduto={produto.name}
+                            valorProduto={produto.value}
                     />
+                        <Botao                            
+                            onClick={() => {this.adicionarProduto(produto.id)}}>
+                            Adicionar ao carrinho</Botao>
+                    </div>
         });
+
         return (
             <Container>
                 <Filtro
@@ -158,7 +190,8 @@ class App extends React.Component {
                         <option value="decrescente"> Preço: Decrescente </option>
                     </select>
                     <ContainerProdutos> {listaProdutos} </ContainerProdutos>    
-                </div>    
+                </div> 
+                <Carrinho />
             </Container>
         )
     }
