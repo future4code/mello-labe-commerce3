@@ -1,8 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Filtro from "../filtro/Filtro";
-
-
 
 const ItemProduto = styled.div`
   display: flex;
@@ -26,7 +23,7 @@ class Produtos extends React.Component {
         <ItemProduto>
             <img src={this.props.imagemProduto} />
             <p>{this.props.nomeProduto}</p>
-            <p>{this.props.valorProduto}</p>
+            <p>R$ {this.props.valorProduto}</p>
             <Botao>Adicionar ao carrinho</Botao>
         </ItemProduto>
     );
