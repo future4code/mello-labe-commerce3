@@ -20,14 +20,14 @@ const ContainerProdutos = styled.div`
 
 const produtos = [{
     id: 1,
-    name: "Foguete da Missão Apollo 11",
+    name: "Item A",
     value: 100.0,
     imageUrl: "https://picsum.photos/200/200?a=1",
   },
 
   {
     id: 2,
-    name: "Foguete da Missão Apollo 11",
+    name: "Item B",
     value: 95.0,
     imageUrl: "https://picsum.photos/200/200?a=2",
   },
@@ -92,55 +92,61 @@ class App extends React.Component {
 
     onChangeValorMinimo = (event) => {
         this.setState({ valorMinimo: Number(event.target.value) });
-        console.log(this.state.valorMinimo)
     };
     
     onChangeValorMaximo = (event) => {
         this.setState({ valorMaximo: Number(event.target.value) })
-        console.log(this.state.valorMaximo)
+    
     };
+
+    onChangeBusca = (event) => {
+        this.setState({ buscarProduto: event.target.value })
+    }
     
     filtraProdutos = () => {
-        const produtosFiltrados = this.state.produtos.filter(produto => {
-            if(produto.value >= this.state.valorMinimo) {
-                return true
-            } else {
-                return false
-            }
-            }).filter(produto => {
-                if(produto.value <= this.state.valorMaximo) {
-                    return true
-                } else {
-                    return  false
-                }
-            })    
+        let produtosFiltrados = this.state.produtos;
+        if (this.state.valorMinimo) {
+            produtosFiltrados = produtosFiltrados.filter(produto => {
+               return produto.value >= this.state.valorMinimo;
+            })
+        }
+        if (this.state.valorMaximo) {
+            produtosFiltrados = produtosFiltrados.filter(produto => {
+               return produto.value <= this.state.valorMaximo;
+            })
+        }
+        if (this.state.buscarProduto !== "") {
+            produtosFiltrados = produtosFiltrados.filter(produto => {
+                return produto.name.includes(this.state.buscarProduto)
+            })
+        }
         return produtosFiltrados
     }    
     
+    
     render() {
         const listaOrdenada = this.filtraProdutos().sort((a, b) => {
-              if (this.state.ordenacao === "crescente") {
+            if (this.state.ordenacao === "crescente") {
                 return a.value - b.value;
-              } else if (this.state.ordenacao === "decrescente") {
+            } else if (this.state.ordenacao === "decrescente") {
                 return b.value - a.value;
-              }
+            }
         });
 
         const listaProdutos = listaOrdenada.map(produto => {
             return <Produtos 
-                      key={produto.id}
-                      imagemProduto={produto.imageUrl}
-                      nomeProduto={produto.name}
-                      valorProduto={produto.value}
+                        key={produto.id}
+                        imagemProduto={produto.imageUrl}
+                        nomeProduto={produto.name}
+                        valorProduto={produto.value}
                     />
         });
-
         return (
             <Container>
                 <Filtro
                     filtrarMin={this.onChangeValorMinimo}
                     filtrarMax={this.onChangeValorMaximo}
-                    
+                    buscarProduto={this.onChangeBusca}
                     />
                 <div>
                     <p>Quantidade de Produtos : {listaProdutos.length}</p>

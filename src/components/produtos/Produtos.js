@@ -21,7 +21,7 @@ class Produtos extends React.Component {
   render() {
     return (
         <ItemProduto>
-            <img src={this.props.imagemProduto} />
+            <img src={this.props.imagemProduto} alt="foto produto"/>
             <p>{this.props.nomeProduto}</p>
             <p>R$ {this.props.valorProduto}</p>
             <Botao>Adicionar ao carrinho</Botao>

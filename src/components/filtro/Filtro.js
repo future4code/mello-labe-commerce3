@@ -35,7 +35,10 @@ function Filtro(props) {
             />
         
             <label>Buscar Produto</label>
-            <Input type="text" />
+            <Input
+                type="text"
+                onChange={props.buscarProduto}
+            />
         </Container>
     );
 }
