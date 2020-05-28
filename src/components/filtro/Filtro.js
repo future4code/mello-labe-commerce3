@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Produtos from "../produtos/Produtos";
+import App from "../../App";
 
 const Container = styled.div`
   margin: 1vw;
@@ -17,55 +18,49 @@ const Input = styled.input`
   margin-bottom: 1vh;
 `;
 
-class Filtro extends React.Component {
-  state = {
-    valorMinimo: "",
-    valorMaximo: "",
-    buscarProduto: "",
-  };
+function Filtro(props) {
 
-  onChangeValorMinimo = (event) => {
-    this.setState({ valorMinimo: event.target.value });
-  };
-
-  onChangeValorMaximo = (event) => {
-    this.setState({ valorMaximo: event.target.value });
-  };
-
-  render() {
-    return (
-      <div>
-        {
-          (valoresFiltrados = this.props.Produtos.filter((numeros) => {
-            return;
-          }))
+    const produtosFiltrados = props.listaProdutos.filter(produto => {
+        if(produto.value >= props.filtrarMin) {
+            return true
+        } else {
+            return false
         }
-        <Container>
-          <h2>Filtros:</h2>
-          <form>
-            <label for="minimo">Valor Mínimo</label>
-            <Input
-              id="minimo"
-              type="number"
-              value={this.state.valorMinimo}
-              onChange={this.onChangeValorMinimo}
-            />
-
-            <label for="maximo">Valor Máximo</label>
-            <Input
-              id="maximo"
-              type="number"
-              value={this.state.valorMaximo}
-              onChange={this.onChangeValorMaximo}
-            />
-
-            <label for="busca">Buscar Produto</label>
-            <Input id="busca" type="text" />
-          </form>
-        </Container>
-      </div>
+        }).filter(produto => {
+            if(produto.value <= props.filtrarMax) {
+                return true
+            } else {
+                return  false
+            }
+        }) 
+        
+    return (
+        <div>
+            <Container>
+              <h2>Filtros:</h2>
+                <label>Valor Mínimo</label>
+                <Input
+                  type="number"
+                  onChange={props.filtrarMin}
+                />
+            
+                <label>Valor Máximo</label>
+                <Input
+                  type="number"
+                  onChange={props.filtrarMax}
+                />
+            
+                <label>Buscar Produto</label>
+                <Input type="text" />
+            </Container>
+            {produtosFiltrados.map(produto => {
+            
+                return <div>{produto}</div>
+                
+            })}
+        </div>
+        
     );
-  }
 }
 
 export default Filtro;
