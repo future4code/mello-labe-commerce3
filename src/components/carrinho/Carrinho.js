@@ -4,8 +4,9 @@ class Carrinho extends React.Component {
     render () {
         return (
             <div>
-                <h2>Carrinho</h2>
-                <p>Total:</p>
+            
+        <ul><li>{this.props.quantidade} {this.props.nomeProduto} {this.props.valorProduto * this.props.quantidade}</li></ul>
+               
             </div>
         )
     }
