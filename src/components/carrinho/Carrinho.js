@@ -5,6 +5,7 @@ class Carrinho extends React.Component {
         return (
             <div>
                 <h2>Carrinho</h2>
+                <ul><li>{this.props.nomeProduto}{this.props.valorProduto}</li></ul>
                 <p>Total:</p>
             </div>
         )

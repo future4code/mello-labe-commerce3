@@ -49,35 +49,35 @@ const produtos = [{
 
   {
     id: 4,
-    name: "Foguete da Missão Apollo 11",
+    name: "Bananinha rara",
     value: 250.0,
     imageUrl: "https://picsum.photos/200/200?a=4",
   },
 
   {
     id: 5,
-    name: "Foguete da Missão Apollo 11",
+    name: "Sabre de luz",
     value: 300.0,
     imageUrl: "https://picsum.photos/200/200?a=5",
   },
 
   {
     id: 6,
-    name: "Foguete da Missão Apollo 11",
+    name: "Casa em Jupiter",
     value: 50.0,
     imageUrl: "https://picsum.photos/200/200?a=6",
   },
 
   {
     id: 7,
-    name: "Foguete da Missão Apollo 11",
+    name: "Bananinha comum",
     value: 20.0,
     imageUrl: "https://picsum.photos/200/200?a=7",
   },
 
   {
     id: 8,
-    name: "Foguete da Missão Apollo 11",
+    name: "Pokebola",
     value: 68.0,
     imageUrl: "https://picsum.photos/200/200?a=8",
   }]
@@ -109,7 +109,7 @@ class App extends React.Component {
 
     onChangeBusca = (event) => {
         this.setState({ buscarProduto: event.target.value })
-    }
+    };
     
     filtraProdutos = () => {
         let produtosFiltrados = this.state.produtos;
@@ -129,26 +129,54 @@ class App extends React.Component {
             })
         }
         return produtosFiltrados
-    } 
+    }; 
     
     adicionarProduto = (id) => {
-        const addProduto = {
-            valor: this.state.produtos.id,
-            quantidade: "",
+        let valor
+        let nome
+
+        this.state.produtos.forEach(produto => {
+            if (produto.id === id) {
+                valor = produto.value
+                nome = produto.name
+            }
+        })
+        
+        const produtoAdicionado = {
+            id: Date.now(),
+            nomeProduto: nome,
+            valorProduto: valor,
+            quantidade: 1
         }
 
-        const novoCarrinho = [...this.state.carrinho, addProduto]
+        const novoCarrinho = [...this.state.carrinho, produtoAdicionado ]
 
-        this.setState({carrinho: novoCarrinho})
-
-        const carrinhoCheio = this.state.produtos.filter((produto) => {
-            return produto.id === id 
+        this.setState({
+            carrinho: novoCarrinho
         })
+        
+        
 
-        this.setState({carrinho: carrinhoCheio})
+        console.log(this.state.carrinho)
 
-        console.log(carrinhoCheio)
     }
+    //     const produtoAdicionado = {
+    //         valor: this.state.produtos.id,
+    //         quantidade: "",
+    //     }
+
+    //     const novoCarrinho = [...this.state.carrinho, addProduto]
+
+    //     this.setState({carrinho: novoCarrinho})
+
+    //     const carrinhoCheio = this.state.produtos.filter((produto) => {
+    //         return produto.id === id 
+    //     })
+
+    //     this.setState({carrinho: carrinhoCheio})
+
+    //     console.log(carrinhoCheio)
+    // }
     
     render() {
         const listaOrdenada = this.filtraProdutos().sort((a, b) => {
@@ -172,6 +200,15 @@ class App extends React.Component {
                             Adicionar ao carrinho</Botao>
                     </div>
         });
+        
+        const listaCarrinho = this.state.carrinho.map(produtoNoCarrinho => {
+            return <Carrinho
+                      nomeProduto={produtoNoCarrinho.nomeProduto}
+                      valorProduto={produtoNoCarrinho.valorProduto}
+                      quantidade={produtoNoCarrinho.quantidade}
+                    />
+                        
+        })
 
         return (
             <Container>
@@ -191,7 +228,14 @@ class App extends React.Component {
                     </select>
                     <ContainerProdutos> {listaProdutos} </ContainerProdutos>    
                 </div> 
-                <Carrinho />
+                <div>{listaCarrinho}</div>
+
+                
+                
+                    
+                
+                
+                
             </Container>
         )
     }
