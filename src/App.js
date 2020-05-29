@@ -91,7 +91,8 @@ class App extends React.Component {
         valorMaximo: Infinity,
         valorMinimo: 0,
         buscarProduto: "",
-        carrinho: []
+        carrinho: [],
+        adicionado: false,
     }
 
     alteraOrdenacao = (event) => {
@@ -131,53 +132,34 @@ class App extends React.Component {
         return produtosFiltrados
     }; 
     
-    adicionarProduto = (id) => {
-        let valor
-        let nome
 
-        this.state.produtos.forEach(produto => {
-            if (produto.id === id) {
-                valor = produto.value
-                nome = produto.name
+    adicionarProduto = (id) => {
+        let novoCarrinho = this.state.carrinho
+        // produtoExiste recebe o index de cada produto do carrinho   
+        const produtoExiste = novoCarrinho.findIndex(produto => produto.id === id) 
+    
+        // metodo findIndex retorna -1 caso não encontre produto no array novoCarrinho
+        if (produtoExiste === -1) {
+            const produto = this.state.produtos.find(item => item.id === id)
+           
+            const produtoAdicionado = {
+                id: produto.id,
+                nome: produto.name,
+                valor: produto.value,
+                quantidade: 1
             }
-        })
-        
-        const produtoAdicionado = {
-            id: Date.now(),
-            nomeProduto: nome,
-            valorProduto: valor,
-            quantidade: 1
+            novoCarrinho.push(produtoAdicionado)
+        } else {
+            const qtde = novoCarrinho[produtoExiste].quantidade
+            novoCarrinho[produtoExiste] = {
+                ...novoCarrinho[produtoExiste], 
+                quantidade: qtde + 1
+            }
         }
 
-        const novoCarrinho = [...this.state.carrinho, produtoAdicionado ]
-
-        this.setState({
-            carrinho: novoCarrinho
-        })
-        
-        
-
-        console.log(this.state.carrinho)
-
+        this.setState({ carrinho: novoCarrinho })
     }
-    //     const produtoAdicionado = {
-    //         valor: this.state.produtos.id,
-    //         quantidade: "",
-    //     }
 
-    //     const novoCarrinho = [...this.state.carrinho, addProduto]
-
-    //     this.setState({carrinho: novoCarrinho})
-
-    //     const carrinhoCheio = this.state.produtos.filter((produto) => {
-    //         return produto.id === id 
-    //     })
-
-    //     this.setState({carrinho: carrinhoCheio})
-
-    //     console.log(carrinhoCheio)
-    // }
-    
     render() {
         const listaOrdenada = this.filtraProdutos().sort((a, b) => {
             if (this.state.ordenacao === "crescente") {
@@ -203,11 +185,10 @@ class App extends React.Component {
         
         const listaCarrinho = this.state.carrinho.map(produtoNoCarrinho => {
             return <Carrinho
-                      nomeProduto={produtoNoCarrinho.nomeProduto}
-                      valorProduto={produtoNoCarrinho.valorProduto}
+                      nomeProduto={produtoNoCarrinho.nome}
+                      valorProduto={produtoNoCarrinho.valor}
                       quantidade={produtoNoCarrinho.quantidade}
-                    />
-                        
+                    />       
         })
 
         return (
@@ -228,18 +209,14 @@ class App extends React.Component {
                     </select>
                     <ContainerProdutos> {listaProdutos} </ContainerProdutos>    
                 </div> 
-                <div>{listaCarrinho}</div>
-
-                
-                
-                    
-                
-                
-                
+                <div>    
+                    <h2>Carrinho</h2>
+                    {listaCarrinho}
+                    <p>Total: {this.state.carrinho.reduce((acumulador, objeto) => acumulador + (objeto.quantidade * objeto.valor), 0)}</p>    
+                </div>    
             </Container>
         )
     }
-
 }
 
 export default App;
