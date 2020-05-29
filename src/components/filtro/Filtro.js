@@ -9,12 +9,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 97vh;
-  width: 18vw;
+  width: 15vw;
 `;
 
 const Input = styled.input`
-  display: block;
+  display: flex;
   margin-bottom: 1vh;
+  width: 75%;
 `;
 
 function Filtro(props) {

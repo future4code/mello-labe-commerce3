@@ -8,7 +8,14 @@ import styled from 'styled-components';
 const Container = styled.div `
   display: flex;
 `
-
+const Header = styled.div `
+    display: flex;
+    justify-content: space-between;
+`
+const Select = styled.select`
+    height: 70%;
+    margin-top: 3vh;
+`
 const ContainerProdutos = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -18,6 +25,13 @@ const ContainerProdutos = styled.div`
   justify-items: center;
   align-items: center;
 `
+const Produto = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 5px;
+`
+
 const Botao = styled.button`
   font-size: 14px;
   &:hover {
@@ -25,6 +39,16 @@ const Botao = styled.button`
     color: white;
   }
 `;
+
+const CarrinhoCompras = styled.div`
+    margin: 1vw;
+  padding-left: 2vw;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  height: 97vh;
+  width: 15vw;
+`
 
 const produtos = [{
     id: 1,
@@ -42,42 +66,42 @@ const produtos = [{
 
   {
     id: 3,
-    name: "Foguete da Missão Apollo 11",
+    name: "Item C",
     value: 45.0,
     imageUrl: "https://picsum.photos/200/200?a=3",
   },
 
   {
     id: 4,
-    name: "Bananinha rara",
+    name: "Item D",
     value: 250.0,
     imageUrl: "https://picsum.photos/200/200?a=4",
   },
 
   {
     id: 5,
-    name: "Sabre de luz",
+    name: "Item E",
     value: 300.0,
     imageUrl: "https://picsum.photos/200/200?a=5",
   },
 
   {
     id: 6,
-    name: "Casa em Jupiter",
+    name: "Item F",
     value: 50.0,
     imageUrl: "https://picsum.photos/200/200?a=6",
   },
 
   {
     id: 7,
-    name: "Bananinha comum",
+    name: "Item G",
     value: 20.0,
     imageUrl: "https://picsum.photos/200/200?a=7",
   },
 
   {
     id: 8,
-    name: "Pokebola",
+    name: "Item H",
     value: 68.0,
     imageUrl: "https://picsum.photos/200/200?a=8",
   }]
@@ -160,6 +184,14 @@ class App extends React.Component {
         this.setState({ carrinho: novoCarrinho })
     }
 
+    excluirProduto = (id) => {
+        const excluirDoCarrinho = this.state.carrinho.filter(produto => {
+            return produto.id !== id
+        })
+
+        this.setState({carrinho: excluirDoCarrinho})
+    } 
+
     render() {
         const listaOrdenada = this.filtraProdutos().sort((a, b) => {
             if (this.state.ordenacao === "crescente") {
@@ -170,7 +202,7 @@ class App extends React.Component {
         });
 
         const listaProdutos = listaOrdenada.map(produto => {
-            return <div>
+            return <Produto>
                         <Produtos 
                             key={produto.id}
                             imagemProduto={produto.imageUrl}
@@ -180,7 +212,7 @@ class App extends React.Component {
                         <Botao                            
                             onClick={() => {this.adicionarProduto(produto.id)}}>
                             Adicionar ao carrinho</Botao>
-                    </div>
+                    </Produto>
         });
         
         const listaCarrinho = this.state.carrinho.map(produtoNoCarrinho => {
@@ -188,6 +220,7 @@ class App extends React.Component {
                       nomeProduto={produtoNoCarrinho.nome}
                       valorProduto={produtoNoCarrinho.valor}
                       quantidade={produtoNoCarrinho.quantidade}
+                      excluir={()=>this.excluirProduto(produtoNoCarrinho.id)}
                     />       
         })
 
@@ -199,21 +232,23 @@ class App extends React.Component {
                     buscarProduto={this.onChangeBusca}
                     />
                 <div>
-                    <p>Quantidade de Produtos : {listaProdutos.length}</p>
-                    <select
-                        value={this.state.ordenacao}
-                        onChange={this.alteraOrdenacao}
-                    >
-                        <option value="crescente"> Preço: Crescente </option>
-                        <option value="decrescente"> Preço: Decrescente </option>
-                    </select>
+                    <Header>
+                        <p>Quantidade de Produtos : {listaProdutos.length}</p>
+                        <Select
+                            value={this.state.ordenacao}
+                            onChange={this.alteraOrdenacao}
+                        >
+                            <option value="crescente"> Preço: Crescente </option>
+                            <option value="decrescente"> Preço: Decrescente </option>
+                        </Select>
+                    </Header> 
                     <ContainerProdutos> {listaProdutos} </ContainerProdutos>    
                 </div> 
-                <div>    
+                <CarrinhoCompras>    
                     <h2>Carrinho</h2>
                     {listaCarrinho}
                     <p>Total: {this.state.carrinho.reduce((acumulador, objeto) => acumulador + (objeto.quantidade * objeto.valor), 0)}</p>    
-                </div>    
+                </CarrinhoCompras>    
             </Container>
         )
     }
