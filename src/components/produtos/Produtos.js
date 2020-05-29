@@ -1,22 +1,14 @@
 import React from "react";
-import styled from "styled-components";
-
-const ItemProduto = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  padding: 5px;
-`;
 
 class Produtos extends React.Component {
 
   render() {
     return (
-        <ItemProduto>
+        <div>
             <img src={this.props.imagemProduto} alt="foto produto"/>
             <p>{this.props.nomeProduto}</p>
             <p>R$ {this.props.valorProduto}</p>
-        </ItemProduto>
+        </div>
     );
   }
 }
